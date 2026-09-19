@@ -1,0 +1,1152 @@
+/* ==========================================================================
+   IPPLS – Instituto Politécnico Privado Lucrécio dos Santos
+   styles.css
+
+   1.  Reset / base
+   2.  Variáveis
+   3.  Tipografia
+   4.  Header
+   5.  Hero
+   6.  Secções gerais
+   7.  Cards
+   8.  Cursos
+   9.  Estatísticas
+   10. Testemunhos
+   11. Contactos
+   12. Mapa
+   13. Footer
+   14. Animações
+   15. Responsividade
+   ========================================================================== */
+
+
+/* ==========================================================================
+   2. VARIÁVEIS  (declaradas primeiro para estarem disponíveis no reset)
+   ========================================================================== */
+:root {
+  /* Paleta obrigatória */
+  --bg: #1e5e87;
+  --card: #e8be49;
+  --rd: #c87b32;
+  --azul: #18335d;
+  --bege: #dac087;
+
+  /* Auxiliares neutras */
+  --branco: #ffffff;
+  --papel: #f8f6f1;
+  --texto: rgb(24 51 93 / 0.82);
+  --linha: rgb(24 51 93 / 0.12);
+
+  /* Tipografia */
+  --fonte: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  /* Layout */
+  --largura: 1180px;
+  --gutter: max(1.25rem, calc((100% - var(--largura)) / 2));
+  --espaco-secao: clamp(3.5rem, 8vw, 6.5rem);
+  --altura-header: 4.25rem;
+  --raio: 6px;
+
+  /* Sombras suaves */
+  --sombra-1: 0 1px 2px rgb(24 51 93 / 0.06), 0 8px 24px -14px rgb(24 51 93 / 0.22);
+  --sombra-2: 0 2px 4px rgb(24 51 93 / 0.08), 0 20px 36px -18px rgb(24 51 93 / 0.32);
+
+  /* Movimento */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --rapido: 0.2s;
+}
+
+
+/* ==========================================================================
+   1. RESET / BASE
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--altura-header) + 0.75rem);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: clip;
+  background: var(--papel);
+  color: var(--azul);
+  font-family: var(--fonte);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+h1, h2, h3, p, ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+main > section {
+  scroll-margin-top: calc(var(--altura-header) + 0.75rem);
+}
+
+:focus-visible {
+  outline: 3px solid var(--rd);
+  outline-offset: 3px;
+}
+
+/* Foco claro sobre fundos escuros */
+.navegacao :focus-visible,
+.hero :focus-visible,
+.missao :focus-visible,
+.estatisticas :focus-visible,
+footer :focus-visible {
+  outline-color: var(--card);
+}
+
+/* Bloqueia o scroll com o menu móvel aberto */
+body:has(#sidebar[aria-expanded="true"]) {
+  overflow: hidden;
+}
+
+
+/* ==========================================================================
+   3. TIPOGRAFIA
+   ========================================================================== */
+h1, h2, h3 {
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Eyebrows – indicadores de secção */
+.sobre > span,
+.diferenciais > span,
+.missao > span,
+.cursos > b,
+.estrutura > span,
+.testemunhos > span,
+.contactos > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: fit-content;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--eyebrow, var(--azul));
+}
+
+.sobre > span::before,
+.diferenciais > span::before,
+.missao > span::before,
+.cursos > b::before,
+.estrutura > span::before,
+.testemunhos > span::before,
+.contactos > span::before {
+  content: "";
+  width: 2rem;
+  height: 3px;
+  background: var(--barra, var(--rd));
+}
+
+/* Títulos de secção */
+.sobre > h2,
+.diferenciais > h2,
+.missao > h2,
+.estrutura > h2,
+.testemunhos > h2,
+.contactos > h2,
+.mapa > h2,
+.cursos > p {
+  max-width: 24ch;
+  font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--titulo, var(--azul));
+}
+
+.sobre > h2,
+.diferenciais > h2,
+.missao > h2,
+.estrutura > h2,
+.testemunhos > h2,
+.contactos > h2,
+.mapa > h2 {
+  margin-top: 0.9rem;
+}
+
+
+/* ==========================================================================
+   4. HEADER
+   ========================================================================== */
+.navegacao {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--azul);
+  border-bottom: 3px solid var(--card);
+}
+
+.navegacao nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: var(--altura-header);
+  padding-inline: var(--gutter);
+}
+
+/* Marca */
+.marca {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.marca a {
+  width: fit-content;
+  font-size: clamp(1.6rem, 4vw, 1.9rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--branco);
+  text-decoration: none;
+  transition: color var(--rapido) var(--ease);
+}
+
+.marca a:hover {
+  color: var(--card);
+}
+
+.sigla {
+  max-width: min(15rem, 58vw);
+  font-size: 0.62rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: var(--bege);
+}
+
+/* Botão hambúrguer */
+.menu-hamburguer {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: var(--raio);
+  cursor: pointer;
+  transition: background var(--rapido) var(--ease);
+}
+
+.menu-hamburguer:hover {
+  background: rgb(255 255 255 / 0.1);
+}
+
+.menu-hamburguer span {
+  width: 1.4rem;
+  height: 2px;
+  background: var(--branco);
+  border-radius: 2px;
+  transition: transform 0.3s var(--ease), opacity 0.2s var(--ease);
+}
+
+.menu-hamburguer[aria-expanded="true"] span:nth-child(1),
+.menu-hamburguer:is(.ativo, .active, .aberto, .open, .show, .is-open) span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-hamburguer[aria-expanded="true"] span:nth-child(2),
+.menu-hamburguer:is(.ativo, .active, .aberto, .open, .show, .is-open) span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-hamburguer[aria-expanded="true"] span:nth-child(3),
+.menu-hamburguer:is(.ativo, .active, .aberto, .open, .show, .is-open) span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Menu – painel lateral (mobile / tablet) */
+#menu-principal {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(86vw, 340px);
+  height: 100dvh;
+  padding: 5.5rem 1.5rem 2rem;
+  overflow-y: auto;
+  background: var(--azul);
+  border-left: 3px solid var(--card);
+  visibility: hidden;
+  transform: translateX(100%);
+  transition: transform 0.3s var(--ease), visibility 0s linear 0.3s;
+}
+
+#menu-principal li + li {
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+}
+
+#menu-principal a {
+  position: relative;
+  display: block;
+  padding: 1rem 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--branco);
+  text-decoration: none;
+  transition: color var(--rapido) var(--ease), padding var(--rapido) var(--ease);
+}
+
+#menu-principal a:hover,
+#menu-principal a:focus-visible {
+  color: var(--card);
+  padding-left: 0.5rem;
+}
+
+.navegacao:has(#sidebar[aria-expanded="true"]) #menu-principal,
+#menu-principal:is(.ativo, .active, .aberto, .open, .show, .is-open, .visivel) {
+  visibility: visible;
+  transform: none;
+  box-shadow: -18px 0 40px rgb(0 0 0 / 0.25);
+  transition-delay: 0s;
+}
+
+/* Overlay do menu */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgb(9 22 44 / 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease);
+}
+
+body:has(#sidebar[aria-expanded="true"]) .menu-overlay,
+.menu-overlay:is(.ativo, .active, .aberto, .open, .show, .is-open, .visivel) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/* ==========================================================================
+   5. HERO
+   ========================================================================== */
+.hero {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 4rem);
+  align-items: center;
+  padding: clamp(3rem, 8vw, 6rem) var(--gutter);
+  color: var(--branco);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.hero-texto {
+  min-width: 0;
+}
+
+.hero h1 {
+  max-width: 16ch;
+  font-size: clamp(2.3rem, 6.4vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--branco);
+}
+
+.hero h1::before {
+  content: "";
+  display: block;
+  width: 4rem;
+  height: 5px;
+  margin-bottom: 1.5rem;
+  background: var(--card);
+}
+
+.hero h1::first-line {
+  color: var(--card);
+}
+
+.hero-texto > p {
+  max-width: 52ch;
+  margin: 1.5rem 0 2rem;
+  font-size: clamp(1.02rem, 2vw, 1.2rem);
+  line-height: 1.7;
+  color: rgb(255 255 255 / 0.88);
+}
+
+.hero-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+}
+
+.hero-botoes a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.8rem 1.6rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  transition: background var(--rapido) var(--ease), color var(--rapido) var(--ease),
+    border-color var(--rapido) var(--ease), transform var(--rapido) var(--ease);
+}
+
+/* CTA principal */
+.hero-botoes a:first-child {
+  background: var(--card);
+  border-color: var(--card);
+  color: var(--azul);
+}
+
+.hero-botoes a:first-child:hover {
+  background: color-mix(in srgb, var(--card), white 28%);
+  border-color: color-mix(in srgb, var(--card), white 28%);
+  transform: translateY(-2px);
+}
+
+/* CTA secundário */
+.hero-botoes a:last-child {
+  background: transparent;
+  border-color: var(--bege);
+  color: var(--branco);
+}
+
+.hero-botoes a:last-child:hover {
+  background: var(--bege);
+  color: var(--azul);
+  transform: translateY(-2px);
+}
+
+/* Imagem com moldura deslocada */
+.hero-imagem {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+}
+
+.hero-imagem::before {
+  content: "";
+  position: absolute;
+  inset: 0.75rem -0.75rem -0.75rem 0.75rem;
+  z-index: -1;
+  border: 3px solid var(--card);
+  border-radius: var(--raio);
+}
+
+.hero-imagem img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--raio);
+  box-shadow: 0 24px 44px -24px rgb(0 0 0 / 0.5);
+}
+
+
+/* ==========================================================================
+   6. SECÇÕES GERAIS
+   ========================================================================== */
+.sobre,
+.diferenciais,
+.missao,
+.cursos,
+.estrutura,
+.testemunhos,
+.contactos,
+.mapa {
+  padding: var(--espaco-secao) var(--gutter);
+}
+
+/* Sobre – editorial em duas colunas no desktop */
+.sobre {
+  display: grid;
+  background: var(--branco);
+}
+
+.sobre > p {
+  max-width: 62ch;
+  margin-top: 1.75rem;
+  padding-left: 1.25rem;
+  border-left: 3px solid var(--rd);
+  font-size: clamp(1.02rem, 1.8vw, 1.15rem);
+  line-height: 1.8;
+  color: var(--texto);
+}
+
+/* Porquê o ITLS */
+.diferenciais {
+  background: var(--bege);
+}
+
+/* Missão, visão e valores */
+.missao {
+  --titulo: var(--branco);
+  --eyebrow: var(--card);
+  --barra: var(--card);
+  background: var(--azul);
+}
+
+/* Estrutura */
+.estrutura {
+  background: var(--branco);
+}
+
+/* Grelha partilhada de cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1.25rem;
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+
+/* ==========================================================================
+   7. CARDS
+   ========================================================================== */
+.card {
+  min-width: 0;
+  padding: clamp(1.4rem, 3vw, 2rem);
+  background: var(--branco);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-1);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease),
+    border-color 0.25s var(--ease);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sombra-2);
+}
+
+.card h3 {
+  margin-bottom: 0.6rem;
+  font-size: clamp(1.1rem, 2vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--azul);
+}
+
+.card p {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--texto);
+}
+
+.diferenciais .card {
+  border-top: 3px solid var(--card);
+}
+
+.estrutura .card {
+  background: var(--papel);
+  border-left: 3px solid var(--rd);
+}
+
+/* Cards sobre fundo escuro */
+.missao .card {
+  background: rgb(255 255 255 / 0.06);
+  border-color: rgb(255 255 255 / 0.14);
+  border-top: 3px solid var(--card);
+  box-shadow: none;
+}
+
+.missao .card:hover {
+  background: rgb(255 255 255 / 0.1);
+  box-shadow: 0 20px 36px -20px rgb(0 0 0 / 0.5);
+}
+
+.missao .card h3 {
+  color: var(--branco);
+}
+
+.missao .card p {
+  color: rgb(255 255 255 / 0.84);
+}
+
+
+/* ==========================================================================
+   8. CURSOS
+   ========================================================================== */
+.cursos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  background: var(--papel);
+}
+
+.cursos > b,
+.cursos > p {
+  grid-column: 1 / -1;
+}
+
+.cursos > b {
+  margin-bottom: -1.1rem;
+}
+
+.cursos > p {
+  margin-bottom: 0.75rem;
+}
+
+.cursos .card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* A imagem passa visualmente para o topo do cartão, sem alterar o HTML */
+.cursos .img-card {
+  order: -1;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease);
+}
+
+.cursos .card:hover .img-card {
+  transform: scale(1.04);
+}
+
+.cursos .card h2 {
+  flex: 1;
+  padding: 1.25rem 1.5rem 1.6rem;
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--azul);
+}
+
+.cursos .card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 4px;
+  background: var(--rd);
+  transition: width 0.4s var(--ease);
+}
+
+.cursos .card:hover::after {
+  width: 100%;
+}
+
+
+/* ==========================================================================
+   9. ESTATÍSTICAS
+   ========================================================================== */
+.estatisticas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: clamp(2.5rem, 6vw, 4.5rem) var(--gutter);
+  background: var(--bg);
+  color: var(--branco);
+  text-align: center;
+}
+
+.numero {
+  min-width: 0;
+  padding: 1.75rem 0.75rem;
+}
+
+.numero:nth-child(even) {
+  border-left: 1px solid rgb(255 255 255 / 0.2);
+}
+
+.numero:nth-child(n + 3) {
+  border-top: 1px solid rgb(255 255 255 / 0.2);
+}
+
+.numero h2 {
+  font-size: clamp(2.5rem, 9vw, 4.75rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--card);
+}
+
+.numero p {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.9);
+}
+
+
+/* ==========================================================================
+   10. TESTEMUNHOS
+   ========================================================================== */
+.testemunhos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  background: var(--papel);
+}
+
+.testemunhos > span,
+.testemunhos > h2 {
+  grid-column: 1 / -1;
+}
+
+.testemunhos > h2 {
+  margin-bottom: 1rem;
+}
+
+.testemunhos .card {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr auto;
+  column-gap: 1rem;
+  align-content: start;
+}
+
+.testemunhos .card > img {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  width: 4.5rem;
+  height: 4.5rem;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--card);
+}
+
+.testemunhos .card > img.p {
+  object-position: center 15%;
+}
+
+.testemunhos .card h3 {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  margin: 0;
+}
+
+.testemunhos .card h3:not(:has(+ span)) {
+  grid-row: 1 / 3;
+  align-self: center;
+}
+
+.testemunhos .card > span {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--rd);
+}
+
+.testemunhos .card > p {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  max-width: 62ch;
+  margin-top: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.estrelas {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  display: flex;
+  gap: 0.2rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--linha);
+}
+
+.estrelas img {
+  width: 1.1rem;
+  height: 1.1rem;
+  /* ícone preto convertido para tom da paleta (--rd) */
+  filter: invert(52%) sepia(72%) saturate(560%) hue-rotate(350deg) brightness(92%);
+}
+
+
+/* ==========================================================================
+   11. CONTACTOS
+   ========================================================================== */
+.contactos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  background: var(--bege);
+}
+
+.contactos > span {
+  order: 1;
+  grid-column: 1 / -1;
+}
+
+.contactos > h2 {
+  order: 2;
+  grid-column: 1 / -1;
+  margin-bottom: 1rem;
+}
+
+.card-logo {
+  order: 3;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1rem 1.25rem;
+  background: var(--branco);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-1);
+  color: var(--azul);
+  text-decoration: none;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease),
+    border-color 0.25s var(--ease);
+}
+
+.card-logo:hover {
+  transform: translateY(-3px);
+  border-color: var(--rd);
+  box-shadow: var(--sombra-2);
+}
+
+.card-logo img {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  padding: 0.6rem;
+  object-fit: contain;
+  background: var(--papel);
+  border-radius: var(--raio);
+}
+
+.card-logo span {
+  min-width: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================================
+   12. MAPA
+   ========================================================================== */
+.mapa {
+  background: var(--branco);
+}
+
+.mapa-wrapper {
+  margin-top: clamp(1.5rem, 4vw, 2.25rem);
+  overflow: hidden;
+  background: var(--papel);
+  border: 1px solid var(--linha);
+  border-top: 4px solid var(--card);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-1);
+}
+
+.mapa-wrapper a {
+  display: block;
+  line-height: 0;
+}
+
+.mapa-wrapper iframe {
+  width: 100%;
+  height: clamp(300px, 46vw, 460px);
+  border: 0;
+}
+
+
+/* ==========================================================================
+   13. FOOTER
+   ========================================================================== */
+footer {
+  padding: clamp(2rem, 5vw, 3rem) var(--gutter);
+  background: var(--azul);
+  border-top: 4px solid var(--card);
+  color: rgb(255 255 255 / 0.82);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+footer span {
+  display: block;
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+
+/* ==========================================================================
+   14. ANIMAÇÕES
+   ========================================================================== */
+@keyframes revelar {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Funciona sem depender do JavaScript */
+.reveal {
+  animation: revelar 0.6s var(--ease) both;
+}
+
+.cards > .reveal:nth-child(2) { animation-delay: 0.08s; }
+.cards > .reveal:nth-child(3) { animation-delay: 0.16s; }
+.cards > .reveal:nth-child(4) { animation-delay: 0.24s; }
+
+/* Nos navegadores compatíveis, anima quando entra no ecrã */
+@supports (animation-timeline: view()) {
+  .reveal,
+  .cards > .reveal:nth-child(n) {
+    animation: revelar linear both;
+    animation-delay: 0s;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none;
+    transition-duration: 0.01ms;
+    transition-delay: 0s;
+  }
+
+  .card:hover,
+  .card-logo:hover,
+  .hero-botoes a:hover,
+  .cursos .card:hover .img-card {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================================
+   15. RESPONSIVIDADE  (mobile first)
+   ========================================================================== */
+
+/* Telemóveis muito pequenos */
+@media (max-width: 380px) {
+  .hero-botoes a {
+    flex: 1 1 100%;
+  }
+
+  .testemunhos .card {
+    grid-template-columns: 3.75rem minmax(0, 1fr);
+  }
+
+  .testemunhos .card > img {
+    width: 3.75rem;
+    height: 3.75rem;
+  }
+}
+
+/* Telemóveis grandes / tablets pequenos */
+@media (min-width: 560px) {
+  .contactos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 700px) {
+  .cursos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem;
+  }
+
+  .cursos > b {
+    margin-bottom: -1.4rem;
+  }
+}
+
+@media (min-width: 800px) {
+  .testemunhos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Tablets grandes / desktop pequeno */
+@media (min-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  }
+
+  .hero-imagem::before {
+    inset: 1rem -1rem -1rem 1rem;
+  }
+
+  .hero-imagem img {
+    aspect-ratio: 5 / 4;
+  }
+
+  .sobre {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto auto 1fr;
+    column-gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .sobre > span,
+  .sobre > h2 {
+    grid-column: 1;
+  }
+
+  .sobre > p {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    align-self: start;
+    margin-top: 0;
+  }
+
+  .estatisticas {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .numero:nth-child(n + 3) {
+    border-top: 0;
+  }
+
+  .numero:nth-child(n + 2) {
+    border-left: 1px solid rgb(255 255 255 / 0.2);
+  }
+}
+
+@media (min-width: 1000px) {
+  .contactos {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Navegação completa no desktop */
+@media (min-width: 1180px) {
+  .navegacao nav {
+    min-height: 4.75rem;
+  }
+
+  .menu-hamburguer,
+  .menu-overlay {
+    display: none;
+  }
+
+  #menu-principal {
+    position: static;
+    z-index: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.1rem;
+    width: auto;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+    background: transparent;
+    border-left: 0;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+
+  #menu-principal li + li {
+    border-top: 0;
+  }
+
+  #menu-principal a {
+    padding: 0.55rem 0.7rem;
+    font-size: 0.84rem;
+    white-space: nowrap;
+  }
+
+  #menu-principal a::after {
+    content: "";
+    position: absolute;
+    left: 0.7rem;
+    right: 0.7rem;
+    bottom: 0.2rem;
+    height: 2px;
+    background: var(--card);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s var(--ease);
+  }
+
+  #menu-principal a:hover,
+  #menu-principal a:focus-visible {
+    padding-left: 0.7rem;
+  }
+
+  #menu-principal a:hover::after,
+  #menu-principal a:focus-visible::after {
+    transform: scaleX(1);
+  }
+}
